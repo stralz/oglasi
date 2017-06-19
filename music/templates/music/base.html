@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Oglasi.ba{% endblock %}</title>
+    {% load staticfiles %}
+    <link rel="shortcut icon" type="image/png" href="{%  static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{% static 'music/js/main.js' %}"></script>
+    <style>
+		.navbar {
+			font-size: 20px;
+		}
+		.navbar-brand {
+		  padding: 0px;
+		}
+		.navbar-brand>img {
+		  height: 100%;
+		  padding: 15px;
+		  width: auto;
+		}
+		#span {
+			font-size: 20px;
+		}
+		#postaviOglas {
+			padding-top: 1px;
+			padding-bottom: 1px;
+			font-size: 20px;
+			border-radius: 40px;
+		}
+	</style>
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+				<a class="navbar-brand" href="{% url 'music:index' %}"><img src="../../static/music/images/logo.png" alt="eyy"></a>
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="#">☰&nbsp;Kategorije</a>
+					</li>
+					<li class="nav-item">
+						<p class="navbar-btn">
+                    		<a href="{% url 'music:napravi_oglas' %}" class="btn btn-success" id="postaviOglas">+ Postavi oglas</a>
+                		</p>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'music:register' %}">Register</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'music:faq' %}">FAQ</a>
+					</li>
+				</ul>
+		</nav>
+		<div class="container">
+			<form class="form-inline">
+			  <div class="form-group">
+			    <label for="email">Ime artikla:</label>
+			    <input type="text" class="form-control" id="text">
+			  </div>
+			  <div class="form-group">
+			  	<select>
+			  		<option value="Kompljuteri">Kompljuteri</option>
+			  		<option value="Saab">Saab</option>
+			  		<option value="Opel">Opel</option>
+			  		<option value="Audi">Audi</option>
+			  	</select>
+			  </div>
+                <div class="input-group">
+                    <span class="input-group-addon">cena od</span>
+                    <input id="msg" type="text" class="form-control" name="msg" placeholder="Min cena">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">do</span>
+                    <input id="msg" type="text" class="form-control" name="msg" placeholder="Max cena">
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Grad">
+                </div>
+			  <button type="submit" class="btn btn-default">Search</button>
+			</form>
+		</div>
+		<div class="container">
+			KATEGORIJE
+		</div>
+		<div class="cointainer">
+			PONUDE
+		</div>
+</nav>
+{% block body %}
+{% endblock %}
+</body>
+</html>

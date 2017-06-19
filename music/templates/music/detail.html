@@ -1,0 +1,28 @@
+{% extends 'music/base.html' %}
+{% block title %}{{ oglas }}{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+        <!-- Left Album Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'music:detail' oglas.id %}">
+                        {% if oglas.slike %}
+                            <img src="{{ oglas.slike.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ oglas.ime_oglasa }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
