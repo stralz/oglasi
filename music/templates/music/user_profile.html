@@ -2,11 +2,54 @@
 
 {% load staticfiles %}
 
-{% block title %}<h1>Cao</h1>{% endblock %}
+{% block title %}{{ user.username }}'s profile{% endblock %}
 
 {% block body %}
+		
+		<br>
 
-        <h1>welcome to your profile page</h1>
+        <div class="container" id="profile_info">
+        	<div class="col-sm-4">
+        		<img src="../../static/music/images/profile.png" alt="profile_pic" id="profile_pic">
+        	</div>
+        	<div class="col-sm-1">
+        		
+        	</div>
+			<div class="col-sm-7 text-left">
+        		User name: <span>{{ user.username }}&nbsp;(broj oglasa)</span>
+        		<br>
+        		<a href="#">&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; broj laikova xd</a>&nbsp;
+        		<a href="#"><span class="glyphicon glyphicon-thumbs-down"></span>&nbsp; broj ne laikova xd</a>
+        		<div class="pull-right">
+        			<a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Svi oglasi</a>&nbsp;&nbsp;
+        			<a href="#"><span class="glyphicon glyphicon-earphone"></span>&nbsp;Kontakt</a>
+        		</div>
+        		<br>
+        		<a href="#"><span><img src="../../static/music/images/star.svg" alt="star"></span>&nbsp;9.69</a>
+        		
+        		<br>
+        		<br>
+        		Description :
+        		<br>
+        		<br>
+        		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum id massa ac fringilla. Sed volutpat enim at lorem sagittis, accumsan tincidunt nisl pretium. Sed nunc magna, ornare quis aliquam dapibus, feugiat in nunc. Proin et commodo nisl. In fringilla mauris ac mauris tristique, eu tristique risus rhoncus. Aenean vel sodales ipsum. Phasellus consectetur lacinia ex, at pharetra felis pretium quis.</p>
+        		<br>
+        		<div class="contact">
+        			Mobilni : 013490348
+        			<br>
+        			E-mail : <a href="#">example@email.com</a>
+        			<br>
+        			<a href="#" class="fa fa-facebook"></a>
+        			<a href="#" class="fa fa-instagram"></a>
+        			<a href="#" class="fa fa-google"></a>
+        		</div>
+			</div>
+        </div>
+		
+		<br>
 
-
+		<div class="container" id="oglasi">
+			<strong>Skorasnji oglasi</strong>
+		</div>
+		
 {% endblock %}
