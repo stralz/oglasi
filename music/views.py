@@ -56,6 +56,13 @@ class Izbrisi_oglas(DeleteView):
     success_url = reverse_lazy('music:index')
 
 
+def obrisi_oglas(request, slug):
+    o = Oglas.objects.filter(slug=slug)
+    o.delete()
+    oglasi = Oglas.objects.all()
+    return render(request, 'music/index.html', {'oglasi': oglasi, 'request': request})
+
+
 def detail(request, oglas_id):
     if not request.user.is_authenticated():
         return render(request, 'music/login.html')
@@ -88,7 +95,7 @@ def index(request, selected_page=1):
     except EmptyPage:
         returned_page=pages.page(pages.num_pages)
 
-    return render_to_response('music/index.html', { 'oglasi':returned_page.object_list})
+    return render(request, 'music/index.html', { 'oglasi':returned_page.object_list})
 
 def getOglas(request, oglasSlug):
     oglas=Oglas.objects.filter(slug=oglasSlug)
