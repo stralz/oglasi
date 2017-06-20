@@ -1,0 +1,23 @@
+{% extends 'music/base.html' %}
+{% block body %}
+
+    {% if oglasi %}
+        {% for oglas in oglasi %}
+            <h1><a href="{{ oglas.get_absolute_url }}">{{ oglas.ime_oglasa }}</a></h1>
+            <h3>By {{ oglas.vlasnik }}</h3>
+            <h3>{{ oglas.datum_objave }}</h3>
+            <p>{{ oglas.opis }}</p>
+
+        {% endfor %}
+    {% endif %}
+    <br />
+    {% if page.has_previous %}
+    <a href="/{{ page.previous_page_number }}/">Previous Page</a>
+    {% endif %}
+    {% if page.has_next %}
+        <a href="/{{ page.next_page_number }}/">Next Page</a>
+
+    {% endif %}
+
+{% endblock %}
+

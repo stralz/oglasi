@@ -1,0 +1,10 @@
+{% extends 'music/base.html' %}
+{% block body %}
+        <h1>{{ oglas.ime_oglasa }}</h1>
+        <h3>{{ oglas.datum_objave }}</h3>
+        {{ oglas.opis }}
+        <h3>By {{ oglas.vlasnik }} </h3>
+
+        <h3>Kategorije: {% for kategorija in oglas.kategorije.all %} {{ kategorija.title }} {% endfor %}</h3>
+        <br />
+{% endblock %}

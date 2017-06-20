@@ -4,8 +4,15 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from .forms import OglasForm,  UserForm
-from .models import Oglas
+from .models import Oglas, Kategorija
 from django.contrib.auth.models import User
+from django.shortcuts import render_to_response
+from django.core.paginator import Paginator, EmptyPage
+from django.template import RequestContext
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import View
 
 
 AUDIO_FILE_TYPES = ['wav', 'mp3', 'ogg']
@@ -36,12 +43,17 @@ def napravi_oglas(request):
             "form": form,
         }
         return render(request, 'music/napravi_oglas.html', context)
-
-def izbrisi_oglas(request, oglas_id):
-    oglas = Oglas.objects.get(pk=oglas_id)
+"""
+def izbrisi_oglas(request, id):
+    oglas = Oglas.objects.get(pk=id)
     oglas.delete()
     oglasi = Oglas.objects.filter(vlasnik=request.user)
-    return render(request, 'music/index.html', {'oglasi': oglasi})
+    return render_to_response('music/index.html', {'oglasi': oglasi}, RequestContext(request))
+"""
+
+class Izbrisi_oglas(DeleteView):
+    model = Oglas
+    success_url = reverse_lazy('music:index')
 
 
 def detail(request, oglas_id):
@@ -50,7 +62,7 @@ def detail(request, oglas_id):
     else:
         vlasnik = request.user
         oglas = get_object_or_404(Oglas, pk=oglas_id)
-        return render(request, 'music/detail.html', {'oglas': oglas, 'vlasnik': vlasnik})
+        return render(request, 'music/detail.html', {'oglasi': oglas, 'vlasnik': vlasnik})
 
 def wishlist_oglas(request, oglas_id):
     oglas = get_object_or_404(Oglas, pk=oglas_id)
@@ -65,25 +77,59 @@ def wishlist_oglas(request, oglas_id):
     else:
         return JsonResponse({'success': True})
 
+def index(request, selected_page=1):
+    oglasi = Oglas.objects.all().order_by('-datum_objave')
 
+    pages=Paginator(oglasi, 5)
+    returned_page=pages.page(selected_page)
+
+    try:
+        returned_page=pages.page(selected_page)
+    except EmptyPage:
+        returned_page=pages.page(pages.num_pages)
+
+    return render_to_response('music/index.html', { 'oglasi':returned_page.object_list})
+
+def getOglas(request, oglasSlug):
+    oglas=Oglas.objects.filter(slug=oglasSlug)
+
+    return render_to_response('music/single.html', { 'oglas': oglas}, context_instance=RequestContext(request))
+
+def getKategorija(request, kategorijaSlug, selected_page=1):
+    oglasi=Oglas.objects.all().order_by('-datum_objave')
+    kategorija_oglasi=[]
+    for oglas in oglasi:
+        if oglas.kategorije.filter(slug=kategorijaSlug):
+            kategorija_oglasi.append(oglas)
+
+    pages=Paginator(kategorija_oglasi, 5)
+
+    kategorija=Kategorija.objects.filter(slug=kategorijaSlug)[0]
+
+    try:
+        returned_page=pages.page(selected_page)
+    except EmptyPage:
+        returned_page=pages.page(pages.num_pages)
+
+    return render_to_response('music/kategorija.html', {'oglasi' : returned_page.object_list, 'page':returned_page, 'kategorija' : kategorija})
+
+class DetailView(generic.DetailView):
+    model = Oglas
+    template_name = 'music/detail.html'
+
+"""
 def index(request):
     if not request.user.is_authenticated():
         return render(request, 'music/login.html')
     else:
-        oglasi = Oglas.objects.filter(vlasnik=request.user)
-        query = request.GET.get("q")
-        if query:
-            oglasi = oglasi.filter(
-                Q(ime_oglasa__icontains=query) |
-                Q(vlasnik__icontains=query)
-            ).distinct()
+       
             return render(request, 'music/index.html', {
                 'oglasi': oglasi,
             })
         else:
             return render(request, 'music/index.html', {'oglasi': oglasi})
 
-
+"""
 def logout_user(request):
     logout(request)
     form = UserForm(request.POST or None)
@@ -137,3 +183,5 @@ def faq(request):
 def get_user_profile(request, username):
     user = User.objects.get(username=username)
     return render(request, 'music/user_profile.html', {"user":user})
+
+

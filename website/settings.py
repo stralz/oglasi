@@ -10,7 +10,7 @@ SECRET_KEY = 'rha7*we-io_dbhnf$k)%wum_i=-fct9+n^j+@5j9p*$z01lzj1'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
 ]
 
 MIDDLEWARE_CLASSES = [

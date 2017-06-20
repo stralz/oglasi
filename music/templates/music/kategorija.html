@@ -1,0 +1,19 @@
+{% extends 'music/base.html' %}
+{% block body %}
+	<h1>Oglasi za {{ kategorija.title }}</h1>
+	{% if oglasi %}
+		{% for oglas in oglasi %}
+		<h1><a href="{{ post.get_absolute_url }}">{{ oglas.ime_oglasa }}</a></h1>
+		{{ oglas.opis }}
+		{% endfor %}
+		<br />
+		{% if page.has_previous %}
+		<a href="/{{ page.previous_page_number }}/">Previous page</a>
+	{% endif %}
+	{% if page.has_next %}
+		<a href="/{{ page.next_page_number }}/">Next page</a>
+	{% endif %}
+	{% else %}
+	<p>Nema matchovanih oglasa</p>
+	{% endif %}
+{% endblock %}
