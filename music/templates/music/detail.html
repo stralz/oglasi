@@ -2,15 +2,13 @@
 {% block title %}{{ oglas }}{% endblock %}
 
 {% block body %}
-<div class="container-fluid songs-container">
-
+<div class="container">
     <div class="row">
-
         <!-- Left Album Info -->
         <div class="col-sm-8 col-md-9">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <a href="{% url 'music:detail' oglas.id %}">
+                    <a href="{% url 'music:detail' oglas.slug %}">
                         {% if oglas.slike %}
                             <img src="{{ oglas.slike.url }}" class="img-responsive">
                         {% else %}
@@ -21,11 +19,26 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4 col-md-9">
-            
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    Vlasnik: <br>
+                    <a href="{% url 'music:get_user_profile' oglas.vlasnik %}">{{ oglas.vlasnik }}</a> (broj oglasa)
+                    <br>
+                    <a href="#">svi oglasi</a>
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
-
+<br>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            stanje:
+            <br>
+            opis: <br>{{ oglas.opis }}
+        </div>
+    </div>
+</div>
 {% endblock %}
