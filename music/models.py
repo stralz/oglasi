@@ -27,7 +27,14 @@ class Oglas(models.Model):
     opis=models.TextField(default='')
     slug=models.SlugField(max_length=40, unique=True)
     kategorije = models.ManyToManyField(Kategorija, blank=True, through='KategorijaToOglas')
+    KORISCENO = 'Korisceno'
+    NOVO = 'Novo'
+    STANJE_CHOICES = (
+        (KORISCENO, 'Korisceno'),
+        (NOVO, 'Novo'),
+    )
 
+    stanje = models.CharField(choices=STANJE_CHOICES, max_length=100, default=NOVO)
     def __str__(self):
         return self.ime_oglasa
 
