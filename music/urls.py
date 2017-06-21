@@ -30,4 +30,6 @@ urlpatterns = [
     url(r'^(?P<oglas_id>[0-9]+)/$', views.getOglas, name='detailid'),
     url(r'^napravi_oglas/$', views.napravi_oglas, name='napravi_oglas'),
     url(r'^faq/$', views.faq, name='faq'),
-    url(r'profile/(?P<username>[a-zA-Z0-9]+)$', views.get_user_profile, name='get_user_profile'), ]
+    url(r'profile/(?P<username>[a-zA-Z0-9]+)$', views.get_user_profile, name='get_user_profile'),
+    url(r'^(?P<username>[a-zA-Z0-9]+)/oglasi/$', views.oglasi_korisnik, name='oglasi_korisnik'),
+]

@@ -175,14 +175,18 @@ def register(request):
     }
     return render(request, 'music/register.html', context)
 
+
 def faq(request):
     return render(request, 'music/faq.html')
-
 
 
 def get_user_profile(request, username):
     user = User.objects.get(username=username)
     oglasi = Oglas.objects.filter(vlasnik=user)
-    return render(request, 'music/user_profile.html', {"user":user, 'oglasi': oglasi, 'request': request})
+    return render(request, 'music/user_profile.html', {'user': user, 'oglasi': oglasi, 'request': request})
 
 
+def oglasi_korisnik(request, username):
+    user = User.objects.get(username=username)
+    oglasi = Oglas.objects.filter(vlasnik=user)
+    return render(request, 'music/oglasi_korisnik.html', {"user":user, 'oglasi': oglasi, 'request': request})
