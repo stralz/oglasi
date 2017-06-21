@@ -25,7 +25,7 @@
                     Vlasnik: <br>
                     <a href="{% url 'music:get_user_profile' oglas.vlasnik %}">{{ oglas.vlasnik }}</a> (broj oglasa)
                     <br>
-                    <a href="#">svi oglasi</a>
+                    <a href="{% url 'music:oglasi_korisnik' oglas.vlasnik %}">svi oglasi</a>
                 </div>
             </div>
         </div>
