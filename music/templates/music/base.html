@@ -50,15 +50,21 @@
 					</li>
 				</ul>
 				<ul class="nav navbar-nav pull-right">
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
-					</li>
-					<li class="nav-item">
+					{% if not user.is_authenticated %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
+						</li>
+					{% endif %}
+					{% if user.is_authenticated %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
+						</li>
+					{% endif %}
+					{% if not user.is_authenticated %}
+						<li class="nav-item">
 						<a class="nav-link" href="{% url 'music:register' %}">Register</a>
 					</li>
+					{% endif %}
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'music:faq' %}">FAQ</a>
 					</li>
@@ -72,10 +78,9 @@
 			  </div>
 			  <div class="form-group">
 			  	<select>
-			  		<option value="Kompljuteri">Kompljuteri</option>
-			  		<option value="Saab">Saab</option>
-			  		<option value="Opel">Opel</option>
-			  		<option value="Audi">Audi</option>
+			  		{% for kategorija in kategorije  %}
+						<option value="">{{ kategorija.title }}</option>
+			  		{% endfor %}
 			  	</select>
 			  </div>
                 <div class="input-group">

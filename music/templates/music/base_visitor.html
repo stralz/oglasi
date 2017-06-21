@@ -36,7 +36,7 @@
 </head>
 <body>
 <nav class="navbar navbar-default">
-				<a class="navbar-brand" href="{% url 'music:index' %}"><img src="../../static/music/images/logo.png" alt="eyy"></a>
+				<a class="navbar-brand" href="{% url 'music:index' %}"><img src="http://www.stralz.com/novi/logoic.png" alt="eyy"></a>
 				<ul class="nav navbar-nav">
 					<li class="nav-item">
 						<a class="nav-link" href="#">☰&nbsp;Kategorije</a>
@@ -48,15 +48,21 @@
 					</li>
 				</ul>
 				<ul class="nav navbar-nav pull-right">
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
-					</li>
-					<li class="nav-item">
+					{% if not user.is_authenticated %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
+						</li>
+					{% endif %}
+					{% if user.is_authenticated %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
+						</li>
+					{% endif %}
+					{% if not user.is_authenticated %}
+						<li class="nav-item">
 						<a class="nav-link" href="{% url 'music:register' %}">Register</a>
 					</li>
+					{% endif %}
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'music:faq' %}">FAQ</a>
 					</li>
@@ -90,13 +96,8 @@
 			  <button type="submit" class="btn btn-default">Search</button>
 			</form>
 		</div>
-		<div class="container">
-			KATEGORIJE
-		</div>
-		<div class="cointainer">
-			PONUDE
-		</div>
 </nav>
+<br>
 {% block body %}
 {% endblock %}
 </body>

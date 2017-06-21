@@ -88,7 +88,7 @@ def index(request, selected_page=1):
     except EmptyPage:
         returned_page=pages.page(pages.num_pages)
 
-    return render(request, 'music/index.html', { 'oglasi':returned_page.object_list , 'request' : request})
+    return render(request, 'music/index.html', { 'oglasi':returned_page.object_list , 'kategorije' : Kategorija.objects.all(), 'request' : request})
 
 def getOglas(request, oglasSlug):
     oglas=Oglas.objects.filter(slug=oglasSlug)
