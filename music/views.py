@@ -182,6 +182,7 @@ def faq(request):
 
 def get_user_profile(request, username):
     user = User.objects.get(username=username)
-    return render(request, 'music/user_profile.html', {"user":user})
+    oglasi = Oglas.objects.filter(vlasnik=user)
+    return render(request, 'music/user_profile.html', {"user":user, 'oglasi': oglasi, 'request': request})
 
 
