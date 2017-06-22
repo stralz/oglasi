@@ -79,7 +79,6 @@ def wishlist_oglas(request, oglas_id):
 
 def index(request, selected_page=1):
     oglasi = Oglas.objects.all().order_by('-datum_objave')
-
     pages=Paginator(oglasi, 5)
     returned_page=pages.page(selected_page)
 
