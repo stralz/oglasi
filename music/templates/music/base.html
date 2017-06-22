@@ -40,9 +40,18 @@
 <nav class="navbar navbar-default">
 				<a class="navbar-brand" href="{% url 'music:index' %}"><img src="../../static/music/images/logoic.png" alt="eyy"></a>
 				<ul class="nav navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" href="#">☰&nbsp;Kategorije</a>
-					</li>
+						<li class="dropdown">
+ 					 	<button class="btn btn-default dropdown-toggle" type="button" id="dropdownKategorije" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							<p>Kupuj po</p>
+							<p>kategorijama</p>
+ 							<span class="caret"></span>
+  						</button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownKategorije" >
+    						{% for kategorij in Kategorije %}
+							  <li><a href="#"> "{{ kategorij.title }}" </a></li>
+							  {% endfor %}
+  								</ul>
+
 					<li class="nav-item">
 						<p class="navbar-btn">
                     		<a href="{% url 'music:napravi_oglas' %}" class="btn btn-success" id="postaviOglas">+ Postavi oglas</a>

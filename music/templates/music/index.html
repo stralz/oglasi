@@ -7,8 +7,8 @@
 
     <!-- Albums -->
     <div class="row">
-        <h3>Skorasnji oglasi</h3>
         {% if oglasi %}
+         <h3>Skorasnji oglasi</h3>
             {% for oglas in oglasi %}
                 <div class="col-sm-4 col-lg-2">
                     <div class="thumbnail">
@@ -35,14 +35,7 @@
                 {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
             {% endfor %}
         {% else %}
-            <div class="col-sm-12">
-                <br>
-                <a href="{% url 'music:napravi_oglas' %}">
-                    <button type="button" class="btn btn-success">
-                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add an Album
-                    </button>
-                </a>
-            </div>
+            <meta http-equiv="refresh" content="0.1; url=http://127.0.0.1:8000/music/">
         {% endif %}
     </div>
 </div>
