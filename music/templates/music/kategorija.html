@@ -3,7 +3,7 @@
 	<h1>Oglasi iz kategorije {{ kategorija.title }}</h1>
 	{% if oglasi %}
 		{% for oglas in oglasi %}
-		<h1><a href="{{ post.get_absolute_url }}">{{ oglas.ime_oglasa }}</a></h1>
+		<h1><a href="{{ oglas.get_absolute_url }}">{{ oglas.ime_oglasa }}</a></h1>
 		{{ oglas.opis }}
 		{% endfor %}
 		<br />
