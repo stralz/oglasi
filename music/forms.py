@@ -8,7 +8,7 @@ class OglasForm(forms.ModelForm):
 
     class Meta:
         model = Oglas
-        fields = ['ime_oglasa', 'slike', 'opis', 'kategorije', 'slug', 'stanje']
+        fields = ['ime_oglasa', 'slike', 'opis', 'kategorija', 'slug', 'stanje']
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
