@@ -2,6 +2,12 @@ from django.contrib.auth.models import Permission, User
 from django.db import models
 from django.forms import HiddenInput, forms
 from datetime import datetime
+from django.contrib.auth.models import User
+
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    broj = models.CharField(max_length=15)
+    lokacija = models.CharField(max_length=40)
 
 
 class Kategorija(models.Model):
@@ -26,7 +32,7 @@ class Oglas(models.Model):
     datum_objave = models.DateTimeField(default=datetime.now, blank=True)
     opis=models.TextField(default='')
     slug=models.SlugField(max_length=40, unique=True)
-    kategorije = models.ManyToManyField(Kategorija, blank=True, through='KategorijaToOglas')
+    kategorija = models.ForeignKey(Kategorija, default=1)
     KORISCENO = 'Korisceno'
     NOVO = 'Novo'
     STANJE_CHOICES = (

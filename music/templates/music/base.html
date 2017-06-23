@@ -53,7 +53,7 @@
   						</button>
 						  <ul class="dropdown-menu" aria-labelledby="dropdownKategorije" >
     						{% for kategorij in kategorije %}
-							  <li><a href="#"> {{ kategorij.title }} </a></li>
+							  <li><a href="{% url 'music:get_Kategorija' kategorij %}"> {{ kategorij.title }} </a></li>
 							  {% endfor %}
                           </ul>
 

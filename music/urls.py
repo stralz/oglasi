@@ -20,7 +20,7 @@ urlpatterns = [
 
     url(r'^kategorije/?$', ListView.as_view(
         model=Kategorija), name="list_kategorija"),
-    url(r'^kategorije/(?P<kategorijaSlug>\w+)/?$', views.getKategorija, name='get_Kategorija'),
+    url(r'^kategorije/(?P<kategorijaTitle>\w+)/?$', views.getKategorija, name='get_Kategorija'),
     url(r'^kategorije/(?P<kategorijaSlug>\w+)/(?P<selected_page>\d+)/?$', views.getKategorija, name='page_Kategorija'),
 
 
