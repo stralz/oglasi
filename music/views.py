@@ -7,7 +7,7 @@ from .forms import OglasForm,  UserForm, EmployeeForm
 from .models import Oglas, Kategorija
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -77,7 +77,7 @@ def wishlist_oglas(request, oglas_id):
         return JsonResponse({'success': False})
     else:
         return JsonResponse({'success': True})
-
+"""
 def index(request, selected_page=1):
     oglasi = Oglas.objects.all().order_by('-datum_objave')
     pages=Paginator(oglasi, 5)
@@ -89,6 +89,34 @@ def index(request, selected_page=1):
         returned_page=pages.page(pages.num_pages)
 
     return render(request, 'music/index.html', { 'oglasi':returned_page.object_list , 'kategorije' : Kategorija.objects.all(), 'request' : request})
+
+"""
+def index(request):
+    queryset_list = Oglas.objects.all().order_by('-datum_objave')
+    query = request.GET.get("ime")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(ime_oglasa__icontains=query) |
+            Q(opis__icontains=query)
+        ).distinct()
+    paginator = Paginator(queryset_list, 8)  # Show 25 contacts per page
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
+    context = {
+        "oglasi": queryset,
+        "page_request_var": page_request_var,
+    }
+    return render(request, "music/index.html", context)
+
 
 def getOglas(request, oglasSlug):
     oglas=Oglas.objects.filter(slug=oglasSlug)
