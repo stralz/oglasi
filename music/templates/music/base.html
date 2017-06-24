@@ -91,9 +91,10 @@
 			    <input type="text" name="ime" class="form-control" id="text">
 			  </div>
 			  <div class="form-group">
-			  	<select>
+			  	<select name="kategorija">
 			  		{% for kategorija in kategorije  %}
-						<option value="">{{ kategorija.title }}</option>
+						<option value="{{ kategorija.title }}">{{ kategorija.title }}</option>
+
 			  		{% endfor %}
 			  	</select>
 			  </div>

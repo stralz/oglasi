@@ -99,6 +99,37 @@ def index(request):
             Q(ime_oglasa__icontains=query) |
             Q(opis__icontains=query)
         ).distinct()
+
+    query = request.GET.get("grad")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(grad__icontains=query)
+        ).distinct()
+
+    query = request.GET.get("cenaOd")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(cena__gte=query)
+        ).distinct()
+
+    query = request.GET.get("cenaDo")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(cena__lte=query)
+        ).distinct()
+
+    query = request.GET.get("kategorija")
+    if query:
+        kategorijasearch = Kategorija.objects.filter(title=query)
+        queryset_list = queryset_list.filter(
+            Q(kategorija=kategorijasearch)
+        ).distinct()
+
+    if queryset_list == Oglas.objects.all():
+        queryset_list = {}
+
+
+
     paginator = Paginator(queryset_list, 8)  # Show 25 contacts per page
     page_request_var = "page"
     page = request.GET.get(page_request_var)
@@ -114,6 +145,7 @@ def index(request):
     context = {
         "oglasi": queryset,
         "page_request_var": page_request_var,
+        "kategorije": Kategorija.objects.all(),
     }
     return render(request, "music/index.html", context)
 
