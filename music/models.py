@@ -5,7 +5,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
     broj = models.CharField(max_length=15)
     lokacija = models.CharField(max_length=40)
 

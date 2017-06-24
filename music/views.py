@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from .forms import OglasForm,  UserForm, EmployeeForm
-from .models import Oglas, Kategorija
+from .models import Oglas, Kategorija, Employee
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -250,7 +250,12 @@ def faq(request):
 def get_user_profile(request, username):
     user = User.objects.get(username=username)
     oglasi = Oglas.objects.filter(vlasnik=user)
-    return render(request, 'music/user_profile.html', {'user': user, 'oglasi': oglasi, 'request': request, 'kategorije': Kategorija.objects.all()})
+    emp = Employee.objects.filter(user=user)
+    if len(emp) > 0:
+        employee = emp[0]
+    else:
+        employee = False
+    return render(request, 'music/user_profile.html', {'user': user, 'oglasi': oglasi, 'employee': employee, 'request': request, 'kategorije': Kategorija.objects.all()})
 
 
 def oglasi_korisnik(request, username):
