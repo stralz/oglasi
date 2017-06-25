@@ -88,25 +88,26 @@
 			<form class="form-inline">
 			  <div class="form-group">
 			    <label for="email">Ime artikla:</label>
-			    <input type="text" class="form-control" id="text">
+			    <input type="text" name="ime" class="form-control" id="text">
 			  </div>
 			  <div class="form-group">
-			  	<select>
+			  	<select name="kategorija">
 			  		{% for kategorija in kategorije  %}
-						<option value="">{{ kategorija.title }}</option>
+						<option value="{{ kategorija.title }}">{{ kategorija.title }}</option>
+
 			  		{% endfor %}
 			  	</select>
 			  </div>
                 <div class="input-group">
                     <span class="input-group-addon">cena od</span>
-                    <input id="msg" type="text" class="form-control" name="msg" placeholder="Min cena">
+                    <input id="cenaOd" type="text" class="form-control" name="cenaOd" placeholder="Min cena">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">do</span>
-                    <input id="msg" type="text" class="form-control" name="msg" placeholder="Max cena">
+                    <input id="cenaDo" type="text" class="form-control" name="cenaDo" placeholder="Max cena">
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Grad">
+                    <input type="text" name="grad" placeholder="Grad">
                 </div>
 			  <button type="submit" class="btn btn-default">Search</button>
 			</form>

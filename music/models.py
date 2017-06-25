@@ -5,7 +5,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
     broj = models.CharField(max_length=15)
     lokacija = models.CharField(max_length=40)
 
@@ -31,6 +31,8 @@ class Oglas(models.Model):
     na_wishlist = models.BooleanField(default=False)
     datum_objave = models.DateTimeField(default=datetime.now, blank=True)
     opis=models.TextField(default='')
+    grad=models.CharField(max_length=50, default='Sarajevo')
+    cena=models.IntegerField(max_length=30, default=100)
     slug=models.SlugField(max_length=40, unique=True)
     kategorija = models.ForeignKey(Kategorija, default=1)
     KORISCENO = 'Korisceno'
@@ -45,7 +47,7 @@ class Oglas(models.Model):
         return self.ime_oglasa
 
     def get_absolute_url(self):
-        return "/%s/%s/%s/" %(self.datum_objave.year, self.datum_objave.month, self.slug)
+        return "/%s/%s/%s" %('music', 'oglasi', self.slug)
 
     class Meta:
         verbose_name_plural = "Oglasi"

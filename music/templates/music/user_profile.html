@@ -35,9 +35,14 @@
         		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum id massa ac fringilla. Sed volutpat enim at lorem sagittis, accumsan tincidunt nisl pretium. Sed nunc magna, ornare quis aliquam dapibus, feugiat in nunc. Proin et commodo nisl. In fringilla mauris ac mauris tristique, eu tristique risus rhoncus. Aenean vel sodales ipsum. Phasellus consectetur lacinia ex, at pharetra felis pretium quis.</p>
         		<br>
         		<div class="contact">
-        			Mobilni : 013490348
+                    {% if employee %}
+        			Mobilni : {{ employee.broj }}
         			<br>
-        			E-mail : <a href="#">example@email.com</a>
+                    Lokacija : {{ employee.lokacija }}
+                    <br>
+                    {% else %}
+                    {% endif %}
+        			E-mail : <a href="#">{{ user.email }}</a>
         			<br>
         			<a href="#" class="fa fa-facebook"></a>
         			<a href="#" class="fa fa-instagram"></a>

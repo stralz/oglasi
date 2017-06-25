@@ -4,10 +4,10 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from .forms import OglasForm,  UserForm, EmployeeForm
-from .models import Oglas, Kategorija
+from .models import Oglas, Kategorija, Employee
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -77,7 +77,7 @@ def wishlist_oglas(request, oglas_id):
         return JsonResponse({'success': False})
     else:
         return JsonResponse({'success': True})
-
+"""
 def index(request, selected_page=1):
     oglasi = Oglas.objects.all().order_by('-datum_objave')
     pages=Paginator(oglasi, 5)
@@ -89,6 +89,66 @@ def index(request, selected_page=1):
         returned_page=pages.page(pages.num_pages)
 
     return render(request, 'music/index.html', { 'oglasi':returned_page.object_list , 'kategorije' : Kategorija.objects.all(), 'request' : request})
+
+"""
+def index(request):
+    queryset_list = Oglas.objects.all().order_by('-datum_objave')
+    query = request.GET.get("ime")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(ime_oglasa__icontains=query) |
+            Q(opis__icontains=query)
+        ).distinct()
+
+    query = request.GET.get("grad")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(grad__icontains=query)
+        ).distinct()
+
+    query = request.GET.get("cenaOd")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(cena__gte=query)
+        ).distinct()
+
+    query = request.GET.get("cenaDo")
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(cena__lte=query)
+        ).distinct()
+
+    query = request.GET.get("kategorija")
+    if query:
+        kategorijasearch = Kategorija.objects.filter(title=query)
+        queryset_list = queryset_list.filter(
+            Q(kategorija=kategorijasearch)
+        ).distinct()
+
+    if queryset_list == Oglas.objects.all():
+        queryset_list = {}
+
+
+
+    paginator = Paginator(queryset_list, 8)  # Show 25 contacts per page
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
+    context = {
+        "oglasi": queryset,
+        "page_request_var": page_request_var,
+        "kategorije": Kategorija.objects.all(),
+    }
+    return render(request, "music/index.html", context)
+
 
 def getOglas(request, oglasSlug):
     oglas=Oglas.objects.filter(slug=oglasSlug)
@@ -190,7 +250,12 @@ def faq(request):
 def get_user_profile(request, username):
     user = User.objects.get(username=username)
     oglasi = Oglas.objects.filter(vlasnik=user)
-    return render(request, 'music/user_profile.html', {'user': user, 'oglasi': oglasi, 'request': request, 'kategorije': Kategorija.objects.all()})
+    emp = Employee.objects.filter(user=user)
+    if len(emp) > 0:
+        employee = emp[0]
+    else:
+        employee = False
+    return render(request, 'music/user_profile.html', {'user': user, 'oglasi': oglasi, 'employee': employee, 'request': request, 'kategorije': Kategorija.objects.all()})
 
 
 def oglasi_korisnik(request, username):
