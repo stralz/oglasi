@@ -65,6 +65,7 @@ def detail(request, slug):
         oglas1 = Oglas.objects.filter(slug=slug)
         return render(request, 'music/detail.html', {'oglasi': oglas1, 'vlasnik': vlasnik, 'kategorije': Kategorija.objects.all()})
 
+
 def wishlist_oglas(request, oglas_id):
     oglas = get_object_or_404(Oglas, pk=oglas_id)
     try:
@@ -155,7 +156,7 @@ def getOglas(request, oglasSlug):
 
     return render_to_response('music/single.html', { 'oglas': oglas, 'kategorije': Kategorija.objects.all()}, context_instance=RequestContext(request))
 
-def getKategorija(request, kategorijaTitle, selected_page=1):
+def getKategorija(request, kategorijaTitle):
     """
     kategorija_oglasi=[]
     for oglas in oglasi:
@@ -170,8 +171,21 @@ def getKategorija(request, kategorijaTitle, selected_page=1):
 """
     kategorija = Kategorija.objects.filter(title=kategorijaTitle)
     oglasi = Oglas.objects.filter(kategorija=kategorija)
-    return render_to_response('music/kategorija.html', {'oglasi' : oglasi, #'page':returned_page,
-      'kategorija' : kategorijaTitle, 'kategorije': Kategorija.objects.all()})
+
+    paginator = Paginator(oglasi, 8)  # Show 25 contacts per page
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
+    return render_to_response('music/kategorija.html', {'oglasi' : queryset, #'page':returned_page,
+      'kategorija' : kategorijaTitle, 'kategorije': Kategorija.objects.all(), "page_request_var": page_request_var})
 
 class DetailView(generic.DetailView):
     model = Oglas
@@ -255,7 +269,20 @@ def get_user_profile(request, username):
         employee = emp[0]
     else:
         employee = False
-    return render(request, 'music/user_profile.html', {'user': user, 'oglasi': oglasi, 'employee': employee, 'request': request, 'kategorije': Kategorija.objects.all()})
+
+    paginator = Paginator(oglasi, 8)  # Show 25 contacts per page
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
+    return render(request, 'music/user_profile.html', {'user': user, 'oglasi': queryset, 'employee': employee, 'request': request, 'kategorije': Kategorija.objects.all(), "page_request_var": page_request_var})
 
 
 def oglasi_korisnik(request, username):

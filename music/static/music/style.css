@@ -1,3 +1,30 @@
+.navbar {
+  background-color: #f7f7f7;
+  border: 1px #e8e8e8 solid;
+}
+
+.navbar-brand {
+  padding: 0px;
+}
+
+.navbar-brand>img {
+  height: 100%;
+  padding: 15px;
+  width: auto;
+}
+
+#dropdownKategorije {
+    margin-top: 8px;
+    border-width: 1px;
+    margin-bottom: 8px;
+    margin-left: 3px;
+}
+
+.navbar-nav > li{
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
 html {
     position: relative;
     min-height: 100%;
@@ -53,6 +80,25 @@ ul.errorlist > li {
     width: 100%;
     overflow:hidden;
 }
+
+.navbar-brand {
+      padding: 0px;
+    }
+    .navbar-brand>img {
+      height: 100%;
+      padding: 15px;
+      width: auto;
+    }
+        #dropdownKategorije {
+            margin-top: 8px;
+            border-width: 1px;
+            margin-bottom: 8px;
+            margin-left: 3px;
+        }
+        .navbar-nav > li{
+          margin-left: 10px;
+          margin-right: 10px;
+        }
 
 .fa {
     padding: 6px;
