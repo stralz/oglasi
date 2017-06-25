@@ -12,110 +12,72 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="{% static 'music/js/main.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <style>
-		.navbar {
-			font-size: 20px;
-		}
-		.navbar-brand {
-		  padding: 0px;
-		}
-		.navbar-brand>img {
-		  height: 100%;
-		  padding: 15px;
-		  width: auto;
-		}
-		#span {
-			font-size: 20px;
-		}
-		#postaviOglas {
-			padding-top: 1px;
-			padding-bottom: 1px;
-			font-size: 20px;
-			border-radius: 40px;
-            margin-left: 6px;
-		}
-        #dropdownKategorije {
-            margin-top: 8px;
-            border-width: 1px;
-            margin-bottom: 8px;
-            margin-left: 3px;
-        }
-	</style>
 </head>
 <body>
+<div class="container">
 <nav class="navbar navbar-default">
-				<a class="navbar-brand" href="{% url 'music:index' %}"><img src="../../static/music/images/logoic.png" alt="eyy"></a>
-				<ul class="nav navbar-nav">
-						<li class="dropdown">
- 					 	<button class="btn btn-default dropdown-toggle" type="button" id="dropdownKategorije" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							☰&nbsp;Kategorije
- 							<span class="caret"></span>
-  						</button>
-						  <ul class="dropdown-menu" aria-labelledby="dropdownKategorije" >
-    						{% for kategorij in kategorije %}
-							  <li><a href="{% url 'music:get_Kategorija' kategorij %}"> {{ kategorij.title }} </a></li>
-							  {% endfor %}
-                          </ul>
-
-					<li class="nav-item">
-						<p class="navbar-btn">
-                    		<a href="{% url 'music:napravi_oglas' %}" class="btn btn-success" id="postaviOglas">+ Postavi oglas</a>
-                		</p>
-					</li>
-				</ul>
-				<ul class="nav navbar-nav pull-right">
-					{% if not user.is_authenticated %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
-						</li>
-					{% endif %}
-					{% if user.is_authenticated %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
-						</li>
-					{% endif %}
-					{% if not user.is_authenticated %}
-						<li class="nav-item">
-						<a class="nav-link" href="{% url 'music:register' %}">Register</a>
-					</li>
-					{% endif %}
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'music:faq' %}">FAQ</a>
-					</li>
-				</ul>
-		</nav>
-		<div class="container">
-			<form class="form-inline">
-			  <div class="form-group">
-			    <label for="email">Ime artikla:</label>
-			    <input type="text" name="ime" class="form-control" id="text">
-			  </div>
-			  <div class="form-group">
-			  	<select name="kategorija">
-			  		{% for kategorija in kategorije  %}
-						<option value="{{ kategorija.title }}">{{ kategorija.title }}</option>
-
-			  		{% endfor %}
-			  	</select>
-			  </div>
-                <div class="input-group">
-                    <span class="input-group-addon">cena od</span>
-                    <input id="cenaOd" type="text" class="form-control" name="cenaOd" placeholder="Min cena">
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon">do</span>
-                    <input id="cenaDo" type="text" class="form-control" name="cenaDo" placeholder="Max cena">
-                </div>
-                <div class="form-group">
-                    <input type="text" name="grad" placeholder="Grad">
-                </div>
-			  <button type="submit" class="btn btn-default">Search</button>
-			</form>
-		</div>
+	<a class="navbar-brand" href="{% url 'music:index' %}"><img src="../../static/music/images/logoic.png" alt="eyy"></a>
+	<ul class="nav navbar-nav">
+			<li class="dropdown">
+			 	<button class="btn btn-default dropdown-toggle" type="button" id="dropdownKategorije" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				☰&nbsp;Kategorije
+					<span class="caret"></span>
+				</button>
+			  <ul class="dropdown-menu" aria-labelledby="dropdownKategorije" >
+				{% for kategorij in kategorije %}
+				  <li><a href="{% url 'music:get_Kategorija' kategorij %}"> {{ kategorij.title }} </a></li>
+				  {% endfor %}
+              </ul>
+			</li>
+		<li class="nav-item">
+			<p class="navbar-btn">
+        		<a href="{% url 'music:napravi_oglas' %}" class="btn btn-success" id="postaviOglas">+ Postavi oglas</a>
+    		</p>
+		</li>
+	</ul>
+	<ul class="nav navbar-nav pull-right">
+		{% if not user.is_authenticated %}
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
+			</li>
+		{% endif %}
+		{% if user.is_authenticated %}
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
+			</li>
+		{% endif %}
+		{% if not user.is_authenticated %}
+			<li class="nav-item">
+			<a class="nav-link" href="{% url 'music:register' %}">Register</a>
+		</li>
+		{% endif %}
+		<li class="nav-item">
+			<a class="nav-link" href="{% url 'music:faq' %}">FAQ</a>
+		</li>
+	</ul>
+	</nav>
+	<div class="container">
+		<form class="form-inline">
+		  <div class="form-group">
+		  	<div class="row">
+		    	<input type="text" name="ime" class="form-control" id="text">
+		  	</div>
+		  	<select name="kategorija">
+		  		{% for kategorija in kategorije %}
+					<option value="{{ kategorija.title }}">{{ kategorija.title }}</option>
+		  		{% endfor %}
+		  	</select>
+		  </div>
+		  <button type="submit" class="btn btn-default">Search</button>
+		</form>
+	</div>
 </nav>
+</div>
 <br>
+<div class="container">
 {% block body %}
 {% endblock %}
+</div>
 <br>
 <br>
 <div class="container text-right" id="footer">

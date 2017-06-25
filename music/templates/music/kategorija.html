@@ -1,19 +1,41 @@
 {% extends 'music/base.html' %}
 {% block body %}
+	<div class="container">
 	<h1>Oglasi iz kategorije {{ kategorija.title }}</h1>
 	{% if oglasi %}
 		{% for oglas in oglasi %}
-		<h1><a href="{{ oglas.get_absolute_url }}">{{ oglas.ime_oglasa }}</a></h1>
-		{{ oglas.opis }}
+            <div class="col-sm-4 col-lg-2">
+                <div class="thumbnail">
+                    <a href="{% url 'music:detail' oglas.slug %}">
+                        <img src="{{ oglas.slike.url }}" class="img-responsive">
+                    </a>
+                    <div class="caption">
+                        <h2>{{ oglas.ime_oglasa }}</h2>
+
+                        <!-- View Details -->
+                        <a href="{% url 'music:detail' oglas.slug %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                        <!-- Delete Album -->
+                        <form action="{% url 'music:izbrisi_oglas' oglas.slug %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="slug" value="{{ oglas.slug }}" />
+                            <button type="submit" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 		{% endfor %}
 		<br />
 		{% if page.has_previous %}
 		<a href="/{{ page.previous_page_number }}/">Previous page</a>
-	{% endif %}
-	{% if page.has_next %}
-		<a href="/{{ page.next_page_number }}/">Next page</a>
-	{% endif %}
-	{% else %}
-	<p>Nema matchovanih oglasa</p>
-	{% endif %}
+		{% endif %}
+		{% if page.has_next %}
+			<a href="/{{ page.next_page_number }}/">Next page</a>
+		{% endif %}
+		{% else %}
+		<p>Nema matchovanih oglasa</p>
+		{% endif %}
+	</div>
 {% endblock %}
