@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from .forms import OglasForm,  UserForm, EmployeeForm
+from .forms import OglasForm, UserForm, EmployeeForm, UserProfileForm, EditForm
 from .models import Oglas, Kategorija, Employee
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import View
 
 
@@ -287,3 +287,54 @@ def oglasi_korisnik(request, username):
     user = User.objects.get(username=username)
     oglasi = Oglas.objects.filter(vlasnik=user)
     return render(request, 'music/oglasi_korisnik.html', {"user":user, 'oglasi': oglasi, 'request': request, 'kategorije': Kategorija.objects.all()})
+
+def edit_user(request):
+    user = request.user
+    request.method = "POST"
+    form = EditForm(request.POST)
+    if form.is_valid():
+        emp = Employee.objects.filter(user=user)[0]
+        emp2 = form.save(commit=False)
+
+        emp.broj = emp2.broj
+        emp.lokacija = emp2.lokacija
+        emp.save()
+        return render(request, 'music/edit_profile.html', {"pform": form})
+    else:
+        form = EditForm()
+        emp = Employee.objects.filter(user=user)[0]
+        emp2 = form.save(commit=False)
+
+        emp.broj = emp2.broj
+        emp.lokacija = emp2.lokacija
+        emp.save()
+        return render(request, 'music/edit_profile.html', {"pform": form})
+
+
+
+"""
+    if not request.user.is_authenticated():
+        return render(request, 'music/login.html')
+    else:
+        form = OglasForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            oglas = form.save(commit=False)
+            oglas.vlasnik = request.user
+            oglas.slike = request.FILES['slike']
+            file_type = oglas.slike.url.split('.')[-1]
+            file_type = file_type.lower()
+            if file_type not in IMAGE_FILE_TYPES:
+                context = {
+                    'oglas': oglas,
+                    'form': form,
+                    'error_message': 'Image file must be PNG, JPG, or JPEG',
+                }
+                return render(request, 'music/napravi_oglas.html', context)
+            oglas.save()
+            return render(request, 'music/detail.html', {'oglas': oglas})
+        context = {
+            "form": form,
+            'kategorije': Kategorija.objects.all(),
+        }
+        return render(request, 'music/napravi_oglas.html', context)
+"""

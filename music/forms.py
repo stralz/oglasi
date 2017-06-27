@@ -20,3 +20,23 @@ class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
         fields = ['broj', 'lokacija']
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = ['broj', 'lokacija']
+
+    def save(self, user=None):
+        user_profile = super(UserProfileForm, self).save(commit=False)
+        emp = Employee.objects.get(user=user)
+        if user:
+            user_profile.user = user
+        user_profile.save()
+        emp.save()
+        return user_profile
+
+class EditForm(forms.ModelForm):
+
+    class Meta:
+        model = Employee
+        fields = ['broj', 'lokacija']
