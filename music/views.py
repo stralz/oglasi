@@ -288,7 +288,7 @@ def oglasi_korisnik(request, username):
     oglasi = Oglas.objects.filter(vlasnik=user)
     return render(request, 'music/oglasi_korisnik.html', {"user":user, 'oglasi': oglasi, 'request': request, 'kategorije': Kategorija.objects.all()})
 
-def edit_user(request):
+def edit_userx(request): #radi donekle
     user = request.user
     request.method = "POST"
     form = EditForm(request.POST)
@@ -311,6 +311,49 @@ def edit_user(request):
         return render(request, 'music/edit_profile.html', {"pform": form})
 
 
+def edit_user(request): #test
+    user = request.user
+    form = EditForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        emp = Employee.objects.filter(user=user)[0]
+        emp2 = form.save(commit=False)
+
+        emp.broj = emp2.broj
+        emp.lokacija = emp2.lokacija
+        """
+        oglas.slike = request.FILES['slike']
+        file_type = oglas.slike.url.split('.')[-1]
+        file_type = file_type.lower()
+        if file_type not in IMAGE_FILE_TYPES:
+            context = {
+                'oglas': oglas,
+                'pform': form,
+                'error_message': 'Image file must be PNG, JPG, or JPEG',
+            }
+            return render(request, 'music/edit_profile.html', context)"""
+        emp.save()
+        #paginator
+        oglasi = Oglas.objects.filter(vlasnik=user)
+        paginator = Paginator(oglasi, 8)  # Show 25 contacts per page
+        page_request_var = "page"
+        page = request.GET.get(page_request_var)
+        try:
+            queryset = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            queryset = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            queryset = paginator.page(paginator.num_pages)
+
+#get user profile
+        return render(request, 'music/user_profile.html', {'user': user, 'oglasi': queryset, 'employee': emp, 'request': request, 'kategorije': Kategorija.objects.all(), "page_request_var": page_request_var})
+    else:
+        context = {
+            "pform": form,
+            'kategorije': Kategorija.objects.all(),
+        }
+        return render(request, 'music/edit_profile.html', context)
 
 """
     if not request.user.is_authenticated():
