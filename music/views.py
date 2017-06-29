@@ -241,6 +241,8 @@ def register(request):
         user.save()
         user = authenticate(username=username, password=password)
         profile = pform.save(commit=False)
+        if (request.FILES):
+            profile.slika = request.FILES['slika']
         profile.user = user
         profile.save()
         if user is not None:
@@ -251,6 +253,7 @@ def register(request):
     context = {
         "form": uform,
         "pform" : pform,
+        "kategorije": Kategorija.objects.all(),
     }
     return render(request, 'music/register.html', context)
 
@@ -288,7 +291,7 @@ def oglasi_korisnik(request, username):
     oglasi = Oglas.objects.filter(vlasnik=user)
     return render(request, 'music/oglasi_korisnik.html', {"user":user, 'oglasi': oglasi, 'request': request, 'kategorije': Kategorija.objects.all()})
 
-def edit_userx(request): #radi donekle
+def edit_userX(request): #radi donekle
     user = request.user
     request.method = "POST"
     form = EditForm(request.POST)
@@ -311,7 +314,7 @@ def edit_userx(request): #radi donekle
         return render(request, 'music/edit_profile.html', {"pform": form})
 
 
-def edit_user(request): #test
+def edit_user(request): #test - radi FULL BATO
     user = request.user
     form = EditForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -320,17 +323,19 @@ def edit_user(request): #test
 
         emp.broj = emp2.broj
         emp.lokacija = emp2.lokacija
-        """
-        oglas.slike = request.FILES['slike']
-        file_type = oglas.slike.url.split('.')[-1]
+        if (request.FILES):
+            emp.slika = request.FILES['slika']
+        else:
+            emp.slika = emp.slika #X faking D
+        file_type = emp.slika.url.split('.')[-1]
         file_type = file_type.lower()
         if file_type not in IMAGE_FILE_TYPES:
             context = {
-                'oglas': oglas,
+                #'oglas': oglas,
                 'pform': form,
                 'error_message': 'Image file must be PNG, JPG, or JPEG',
             }
-            return render(request, 'music/edit_profile.html', context)"""
+            return render(request, 'music/edit_profile.html', context)
         emp.save()
         #paginator
         oglasi = Oglas.objects.filter(vlasnik=user)
@@ -352,6 +357,9 @@ def edit_user(request): #test
         context = {
             "pform": form,
             'kategorije': Kategorija.objects.all(),
+            "br": Employee.objects.filter(user=user)[0].broj,
+            "lok": Employee.objects.filter(user=user)[0].lokacija,
+
         }
         return render(request, 'music/edit_profile.html', context)
 

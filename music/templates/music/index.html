@@ -41,7 +41,7 @@
                 <div class="col-sm-4 col-lg-2">
                     <div class="thumbnail">
                         <a href="{% url 'music:detail' oglas.slug %}">
-                            <img src="{{ oglas.slike.url }}">
+                            <img style="max-height: 100px" src="{{ oglas.slike.url }}">
                         </a>
                         <div class="caption">
                             <h4>{{ oglas.ime_oglasa }}</h4>

@@ -2,73 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Viberr{% endblock %}</title>
+    <title>{% block title %}Oglasi.ba{% endblock %}</title>
     {% load staticfiles %}
     <link rel="shortcut icon" type="image/png" href="{%  static 'favicon.ico' %}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="{% static 'music/js/main.js' %}"></script>
     <style>
-		.navbar {
-			font-size: 20px;
-		}
-		.navbar-brand {
-		  padding: 0px;
-		}
-		.navbar-brand>img {
-		  height: 100%;
-		  padding: 15px;
-		  width: auto;
-		}
-		#span {
-			font-size: 20px;
-		}
-		#postaviOglas {
-			padding-top: 1px;
-			padding-bottom: 1px;
-			font-size: 20px;
-			border-radius: 40px;
-		}
+		
+
 	</style>
 </head>
 <body>
+<div class="container">
 <nav class="navbar navbar-default">
-				<a class="navbar-brand" href="{% url 'music:index' %}"><img src="http://www.stralz.com/novi/logoic.png" alt="eyy"></a>
-				<ul class="nav navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" href="#">☰&nbsp;Kategorije</a>
-					</li>
-					<li class="nav-item">
-						<p class="navbar-btn">
-                    		<a href="{% url 'music:napravi_oglas' %}" class="btn btn-success" id="postaviOglas">+ Postavi oglas</a>
-                		</p>
-					</li>
-				</ul>
-				<ul class="nav navbar-nav pull-right">
-					{% if not user.is_authenticated %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
-						</li>
-					{% endif %}
-					{% if user.is_authenticated %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
-						</li>
-					{% endif %}
-					{% if not user.is_authenticated %}
-						<li class="nav-item">
-						<a class="nav-link" href="{% url 'music:register' %}">Register</a>
-					</li>
-					{% endif %}
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'music:faq' %}">FAQ</a>
-					</li>
-				</ul>
-		</nav>
-		<div class="container">
+    <a class="navbar-brand" href="{% url 'music:index' %}"><img src="../../static/music/images/logoic.png" alt="eyy"></a>
+    <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownKategorije" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                ☰&nbsp;Kategorije
+                    <span class="caret"></span>
+                </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownKategorije" >
+                {% for kategorij in kategorije %}
+                  <li><a href="{% url 'music:get_Kategorija' kategorij %}"> {{ kategorij.title }} </a></li>
+                  {% endfor %}
+              </ul>
+            </li>
+        <li class="nav-item">
+            <p class="navbar-btn">
+                <a href="{% url 'music:napravi_oglas' %}" class="btn btn-success" id="postaviOglas">+ Postavi oglas</a>
+            </p>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav pull-right">
+        {% if not user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'music:login_user' %}">Login</a>
+            </li>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'music:edit_profile' %}">Edit profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'music:logout_user' %}">Logout</a>
+            </li>
+        {% endif %}
+        {% if not user.is_authenticated %}
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'music:register' %}">Register</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'music:faq' %}">FAQ</a>
+        </li>
+    </ul>
+    </nav>
+<!--
 			<form class="form-inline">
 			  <div class="form-group">
 			    <label for="email">Ime artikla:</label>
@@ -95,10 +90,13 @@
                 </div>
 			  <button type="submit" class="btn btn-default">Search</button>
 			</form>
-		</div>
+-->
 </nav>
+</div>
 <br>
+<div class="container">
 {% block body %}
 {% endblock %}
+</div>
 </body>
 </html>

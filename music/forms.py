@@ -19,7 +19,7 @@ class UserForm(forms.ModelForm):
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ['broj', 'lokacija']
+        fields = ['slika', 'broj', 'lokacija']
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -36,7 +36,8 @@ class UserProfileForm(forms.ModelForm):
         return user_profile
 
 class EditForm(forms.ModelForm):
-
+    broj = forms.CharField(label="Broj:")
+    lokacija = forms.CharField(label="Lokacija:")
     class Meta:
         model = Employee
-        fields = ['broj', 'lokacija']
+        fields = ['slika', 'broj', 'lokacija']

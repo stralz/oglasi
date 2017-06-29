@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Employee(models.Model):
     user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
     broj = models.CharField(max_length=15)
+    slika = models.FileField(default='defprofilepic.png')
     lokacija = models.CharField(max_length=40)
 
     def __str__(self):
