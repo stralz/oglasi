@@ -55,25 +55,38 @@
 
 		<div class="container" id="oglasi">
 			<p><strong>Skorasnji oglasi</strong></p>
-            {%for oglas in oglasi %}
+            {% for oglas in oglasi %}
                 <div class="col-sm-4 col-lg-2">
-                    <div class="thumbnail">
+                    <div class="thumbnail" style="height: 210px">
                         <a href="{% url 'music:detail' oglas.slug %}">
-                            <img src="{{ oglas.slike.url }}" class="img-responsive">
+                            <img style="max-height: 100px; min-height: 99px" src="{{ oglas.slike.url }}">
                         </a>
-                        <div class="caption">
-                            <p>{{ oglas.ime_oglasa }}</p>
+                        {% if oglas.ime_oglasa|length > 24 %}
+                            <h4 style="padding-left: 5px; padding-right: 5px">{{ oglas.ime_oglasa|slice:"0:11" }}-</h4>
+                            <h4 style="padding-left: 5px; padding-right: 5px">{{ oglas.ime_oglasa|slice:"11:23" }}...</h4>
+
+                        {% elif oglas.ime_oglasa|length > 12%}
+                            <h4 style="padding-left: 5px; padding-right: 5px">{{ oglas.ime_oglasa|slice:"0:11" }}-</h4>
+                            <h4 style="padding-left: 5px; padding-right: 5px">{{ oglas.ime_oglasa|slice:"11:" }}</h4>
+                        {% else %}
+                            <h4 style="padding-left: 5px; padding-right: 5px">{{ oglas.ime_oglasa }}</h4>
+                            <h4>&nbsp;</h4>
+                        {% endif %}
+
+                        <div class="caption" style="padding-top: 0px ">
 
                             <!-- View Details -->
-                            <a href="{% url 'music:detail' oglas.slug %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+                            <a href="{% url 'music:detail' oglas.slug %}" class="btn btn-primary btn-sm"  role="button">View Details</a>
 
                             <!-- Delete Album -->
                             <form action="{% url 'music:izbrisi_oglas' oglas.slug %}" method="post" style="display: inline;">
                                 {% csrf_token %}
                                 <input type="hidden" name="slug" value="{{ oglas.slug }}" />
+                                {% if oglas.vlasnik == request.user %} <!--   DUGME ZA BRISANJE SAMO AKO JE USERov OGLAS   -->
                                 <button type="submit" class="btn btn-default btn-sm">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
+                                {% endif %}
                             </form>
                         </div>
                     </div>
