@@ -188,7 +188,13 @@ def getKategorija(request, kategorijaTitle):
 class DetailView(generic.DetailView):
     model = Oglas
     template_name = 'music/detail.html'
-    context = {'kategorije': Kategorija.objects.all()}
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(DetailView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['kategorije'] = Kategorija.objects.all()
+        return context
 
 """
 def index(request):
